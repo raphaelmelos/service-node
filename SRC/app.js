@@ -150,7 +150,7 @@ app.delete('/removerCliente/:idcliente', verifiqueJWT, async (req,res) => {
    }
 
 });
-app.get('/animais', verifiqueJWT, async (req, res) => {
+app.get("/animais", verifiqueJWT, async (req, res) => {
 
     try {
 
