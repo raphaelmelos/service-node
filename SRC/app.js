@@ -200,7 +200,7 @@ app.post('/adicionarAnimal', verifiqueJWT, async (req, res) => {
         });
     }
 });
-app.post('/alterarAnimal', verifiqueJWT, async (req, res) => {
+app.post("/alterarAnimal", verifiqueJWT, async (req, res) => {
 
     try {
 
