@@ -150,7 +150,114 @@ app.delete('/removerCliente/:idcliente', verifiqueJWT, async (req,res) => {
    }
 
 });
+app.get('/animais', verifiqueJWT, async (req, res) => {
 
+    try {
 
+        const sql = `
+            SELECT idanimal, nome, especie, peso, altura
+            FROM animais
+        `;
+
+        const [rows] = await db.query(sql);
+
+        res.status(200).json(rows);
+
+    } catch(error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            erro: 'Erro ao buscar animais'
+        });
+    }
+});
+
+app.post('/adicionarAnimal', verifiqueJWT, async (req, res) => {
+
+    try {
+
+        const { nome, especie, peso, altura } = req.body;
+
+        const sql = `
+            INSERT INTO animais
+            (nome, especie, peso, altura)
+            VALUES (?,?,?,?)
+        `;
+
+        await db.query(sql, [nome, especie, peso, altura]);
+
+        res.status(200).json({
+            sucesso: 'Animal cadastrado com sucesso'
+        });
+
+    } catch(error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            erro: 'Erro ao cadastrar animal'
+        });
+    }
+});
+app.post('/alterarAnimal', verifiqueJWT, async (req, res) => {
+
+    try {
+
+        const { idanimal, nome, especie, peso, altura } = req.body;
+
+        const sql = `
+            UPDATE animais
+            SET nome = ?, especie = ?, peso = ?, altura = ?
+            WHERE idanimal = ?
+        `;
+
+        await db.query(sql, [
+            nome,
+            especie,
+            peso,
+            altura,
+            idanimal
+        ]);
+
+        res.status(200).json({
+            sucesso: 'Animal alterado com sucesso'
+        });
+
+    } catch(error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            erro: 'Erro ao alterar animal'
+        });
+    }
+});
+app.delete('/removerAnimal/:idanimal', verifiqueJWT, async (req, res) => {
+
+    try {
+
+        const { idanimal } = req.params;
+
+        const sql = `
+            DELETE FROM animais
+            WHERE idanimal = ?
+        `;
+
+        await db.query(sql, [idanimal]);
+
+        res.status(200).json({
+            sucesso: 'Animal removido com sucesso'
+        });
+
+    } catch(error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            erro: 'Erro ao remover animal'
+        });
+    }
+});
 
 export default app;
